@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.getSystemService
+import com.example.fitnesspoy.model.Calc
+import kotlin.concurrent.thread
 
 class ImcActivity : AppCompatActivity() {
 
@@ -43,7 +45,20 @@ class ImcActivity : AppCompatActivity() {
             .setTitle(getString(R.string.imc_response, result))
             .setMessage(imcResponseId)
             .setPositiveButton(android.R.string.ok
-            ) { p0, p1 -> }
+            ) { _, _ -> }
+            .setNegativeButton(R.string.save){ dialog, which ->
+
+                thread {  //muito importante, para fazer roda a img fora do db!
+                    val app = application as App
+                    val dao = app.db.calcDao()
+                    dao.insert(Calc(type = "imc", res = result))
+                    runOnUiThread {
+                        Toast.makeText(this@ImcActivity, R.string.calc_saved, Toast.LENGTH_LONG).show()
+                    }
+
+                }.start()
+
+            }
             .create()
             .show()
 
