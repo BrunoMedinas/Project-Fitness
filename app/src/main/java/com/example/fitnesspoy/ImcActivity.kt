@@ -46,12 +46,13 @@ class ImcActivity : AppCompatActivity() {
             .setMessage(imcResponseId)
             .setPositiveButton(android.R.string.ok
             ) { _, _ -> }
-            .setNegativeButton(R.string.save){ dialog, which ->
+            .setNegativeButton(R.string.save){ _, _ ->
 
                 thread {  //muito importante, para fazer roda a img fora do db!
                     val app = application as App
                     val dao = app.db.calcDao()
                     dao.insert(Calc(type = "imc", res = result))
+
                     runOnUiThread {
                         Toast.makeText(this@ImcActivity, R.string.calc_saved, Toast.LENGTH_LONG).show()
                     }
