@@ -2,6 +2,7 @@ package com.example.fitnesspoy
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.inputmethodservice.InputMethodService
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -54,7 +55,9 @@ class ImcActivity : AppCompatActivity() {
                     dao.insert(Calc(type = "imc", res = result))
 
                     runOnUiThread {
-                        Toast.makeText(this@ImcActivity, R.string.calc_saved, Toast.LENGTH_LONG).show()
+                        val intent = Intent(this@ImcActivity, ListCalcActivity::class.java)
+                        intent.putExtra("type", "imc")
+                        startActivity(intent)
                     }
 
                 }.start()
